@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WINNING — Competitive Intelligence</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --surface2: #f2f2f7;
+      --surface3: #e8e8ed;
+      --border: #d1d1d6;
+      --accent: #007aff;
+      --accent-dim: rgba(0,122,255,0.08);
+      --accent-border: rgba(0,122,255,0.2);
+      --video: #30d158;
+      --staticc: #007aff;
+      --carousel: #bf5af2;
+      --threat: #ff3b30;
+      --watch: #ff9500;
+      --safe: #30d158;
+      --warn: #ff9f0a;
+      --text: #1c1c1e;
+      --text2: #3a3a3c;
+      --text3: #8e8e93;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      padding: 48px 52px 36px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .header-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .header-title {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+    .header-sub { font-size: 14px; color: var(--text3); }
+
+    /* ── NAV ── */
+    .nav {
+      display: flex;
+      gap: 0;
+      padding: 0 52px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      overflow-x: auto;
+    }
+    .nav-tab {
+      padding: 16px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text3);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s;
+      user-select: none;
+    }
+    .nav-tab:hover { color: var(--text2); }
+    .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* ── LAYOUT ── */
+    .page { display: none; padding: 44px 52px 80px; max-width: 1040px; }
+    .page.active { display: block; }
+
+    /* ── BRAND HEADER ── */
+    .brand-row { display: flex; align-items: center; gap: 16px; margin-bottom: 36px; }
+    .brand-logo {
+      width: 52px; height: 52px;
+      border-radius: 13px;
+      object-fit: cover;
+      background: var(--surface2);
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+    .brand-logo-placeholder {
+      width: 52px; height: 52px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #007aff, #5856d6);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 22px; color: #fff;
+      flex-shrink: 0;
+    }
+    .brand-info-name { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+    .brand-info-meta { font-size: 13px; color: var(--text3); margin-top: 3px; }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+    }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .stat-sub { font-size: 12px; color: var(--text3); margin-top: 5px; }
+
+    /* ── FORMAT BAR ── */
+    .format-pill-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .format-pill { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text2); }
+    .format-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .format-dot.video { background: var(--video); }
+    .format-dot.staticc { background: var(--staticc); }
+    .format-dot.carousel { background: var(--carousel); }
+    .format-bar {
+      display: flex; height: 6px; border-radius: 99px;
+      overflow: hidden; background: var(--surface3); margin-top: 10px;
+    }
+    .format-bar-video { background: var(--video); }
+    .format-bar-staticc { background: var(--staticc); }
+    .format-bar-carousel { background: var(--carousel); }
+
+    /* ── SECTION CARD ── */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      margin-bottom: 12px;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text3);
+      margin-bottom: 14px;
+    }
+
+    /* ── POSITIONING ── */
+    .positioning-text {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    /* ── MESSAGING ANGLE ── */
+    .messaging-list { display: flex; flex-direction: column; gap: 10px; }
+    .messaging-item { display: flex; gap: 10px; font-size: 14px; line-height: 1.55; }
+    .messaging-key { flex-shrink: 0; font-weight: 700; color: var(--text2); min-width: 140px; }
+    .messaging-val { color: var(--text); }
+
+    /* ── CREATIVE FORMAT TOGGLES ── */
+    .format-items { display: flex; flex-direction: column; gap: 2px; }
+    .format-toggle { background: var(--surface2); border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); }
+    .format-toggle summary {
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 16px; cursor: pointer; list-style: none;
+      font-size: 14px; font-weight: 600; color: var(--text);
+      user-select: none; transition: background 0.1s;
+    }
+    .format-toggle summary::-webkit-details-marker { display: none; }
+    .format-toggle summary:hover { background: var(--surface3); }
+    .format-toggle[open] summary { background: var(--surface3); }
+    .format-pct-badge {
+      font-size: 12px; font-weight: 700; padding: 2px 8px;
+      border-radius: 20px; background: var(--accent-dim);
+      color: var(--accent); border: 1px solid var(--accent-border);
+      margin-left: auto; flex-shrink: 0;
+    }
+    .format-toggle-arrow { font-size: 10px; color: var(--text3); transition: transform 0.2s; flex-shrink: 0; }
+    .format-toggle[open] .format-toggle-arrow { transform: rotate(90deg); }
+    .format-toggle-body { padding: 0 16px 14px 16px; border-top: 1px solid var(--border); }
+    .format-desc { font-size: 13px; color: var(--text2); padding-top: 12px; line-height: 1.55; margin-bottom: 10px; }
+    .ref-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600; color: var(--accent);
+      text-decoration: none; background: var(--accent-dim);
+      border: 1px solid var(--accent-border); padding: 4px 10px;
+      border-radius: 6px; transition: background 0.15s;
+    }
+    .ref-link:hover { background: rgba(0,122,255,0.14); }
+
+    /* ── OVERLAP ── */
+    .overlap-items { display: flex; flex-direction: column; gap: 8px; }
+    .overlap-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--surface2); border-radius: var(--radius-sm);
+      padding: 13px 16px; border: 1px solid var(--border);
+    }
+    .overlap-badge {
+      font-size: 12px; font-weight: 800; padding: 3px 10px;
+      border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+    }
+    .badge-threat { background: rgba(255,59,48,0.08); color: var(--threat); border: 1px solid rgba(255,59,48,0.2); }
+    .badge-watch { background: rgba(255,149,0,0.08); color: var(--watch); border: 1px solid rgba(255,149,0,0.2); }
+    .badge-safe { background: rgba(48,209,88,0.08); color: var(--safe); border: 1px solid rgba(48,209,88,0.2); }
+    .overlap-text { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+    /* ── AD LIST ── */
+    .ad-list { display: flex; flex-direction: column; gap: 8px; }
+    .ad-item { background: var(--surface2); border-radius: var(--radius-sm); padding: 14px 16px; border: 1px solid var(--border); }
+    .ad-headline { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+    .ad-copy {
+      font-size: 13px; color: var(--text2); line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 8px;
+    }
+    .ad-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .ad-tag {
+      font-size: 11px; padding: 2px 8px; border-radius: 5px;
+      background: var(--surface3); color: var(--text3); font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .ad-link-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      background: var(--accent-dim); border: 1px solid var(--accent-border);
+      padding: 2px 9px; border-radius: 5px; text-decoration: none;
+      transition: background 0.15s;
+    }
+    .ad-link-btn:hover { background: rgba(0,122,255,0.14); }
+
+    /* ── SPEAK AD ITEMS ── */
+    .speak-ad-item {
+      background: var(--surface2); border-radius: var(--radius-sm);
+      padding: 14px 16px; display: flex; gap: 14px;
+      align-items: flex-start; border: 1px solid var(--border);
+    }
+    .speak-thumb {
+      width: 52px; height: 52px; border-radius: 8px;
+      object-fit: cover; background: var(--surface3); flex-shrink: 0;
+    }
+    .speak-body { flex: 1; min-width: 0; }
+    .speak-name {
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .speak-text { font-size: 13px; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
+    .speak-metrics { display: flex; gap: 14px; flex-wrap: wrap; }
+    .speak-metric { font-size: 12px; color: var(--text3); }
+    .speak-metric strong { color: var(--text); font-weight: 700; }
+
+    /* ── COUNTRY SUB-NAV ── */
+    .country-nav {
+      display: flex; gap: 0; margin-bottom: 28px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      overflow-x: auto;
+    }
+    .country-tab {
+      padding: 12px 18px; font-size: 13px; font-weight: 600;
+      color: var(--text3); cursor: pointer; white-space: nowrap;
+      border-right: 1px solid var(--border); user-select: none;
+      transition: color 0.15s, background 0.15s;
+    }
+    .country-tab:last-child { border-right: none; }
+    .country-tab:hover { background: var(--surface2); color: var(--text2); }
+    .country-tab.active { background: var(--accent); color: #fff; }
+
+    .country-page { display: none; }
+    .country-page.active { display: block; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center; padding: 48px 24px;
+      background: var(--surface2); border-radius: var(--radius);
+      border: 1px dashed var(--border);
+    }
+    .empty-state-icon { font-size: 32px; margin-bottom: 12px; }
+    .empty-state-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .empty-state-sub { font-size: 13px; color: var(--text3); }
+
+    /* ── SYNTHESIS ── */
+    .insight-num {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--accent); margin-bottom: 6px;
+    }
+    .insight-title { font-size: 17px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 10px; }
+    .insight-body { font-size: 14px; color: var(--text2); line-height: 1.7; }
+
+    .whitespace-card {
+      background: linear-gradient(135deg, rgba(0,122,255,0.04), rgba(88,86,214,0.04));
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius); padding: 26px; margin-top: 12px;
+    }
+    .whitespace-title {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--accent); margin-bottom: 16px;
+    }
+    .whitespace-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .whitespace-list li {
+      display: flex; gap: 10px; font-size: 14px; line-height: 1.6; color: var(--text2);
+    }
+    .whitespace-list li::before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 99px; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">WINNING — Yujin's Competitive Intelligence</div>
+  <div class="header-title">Paid Ads Analysis</div>
+  <div class="header-sub">Speak Main Workspace · Motion MCP · April 21, 2026</div>
+</div>
+
+<div class="nav">
+  <div class="nav-tab active" onclick="switchTab('duolingo', this)">Duolingo</div>
+  <div class="nav-tab" onclick="switchTab('malhaevoca', this)">SayVoca</div>
+  <div class="nav-tab" onclick="switchTab('ringle', this)">Ringle</div>
+  <div class="nav-tab" onclick="switchTab('preply', this)">Preply</div>
+  <div class="nav-tab" onclick="switchTab('promova', this)">Promova</div>
+  <div class="nav-tab" onclick="switchTab('jumpspeak', this)">Jumpspeak</div>
+  <div class="nav-tab" style="color:var(--accent);" onclick="switchTab('speak', this)">Speak</div>
+  <div class="nav-tab" onclick="switchTab('synthesis', this)">⚡ Synthesis</div>
+</div>
+
+
+<!-- ════════════════ DUOLINGO ════════════════ -->
+<div id="page-duolingo" class="page active">
+
+  <div class="brand-row">
+    <img class="brand-logo" src="https://motionswipefile.blob.core.windows.net/swipe-file-brand-assets-cached-links/brand-page-assets/meta/141935472517297.png" alt="Duolingo">
+    <div>
+      <div class="brand-info-name">Duolingo</div>
+      <div class="brand-info-meta">Education · App · 5.6M followers</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Active Ads</div>
+      <div class="stat-value">144</div>
+      <div class="stat-sub">of 890 total</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Format</div>
+      <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 73% · Static 26%</div>
+      <div class="format-bar">
+        <div class="format-bar-video" style="width:73%"></div>
+        <div class="format-bar-staticc" style="width:26%"></div>
+        <div class="format-bar-carousel" style="width:1%"></div>
+      </div>
+      <div class="format-pill-row">
+        <span class="format-pill"><span class="format-dot video"></span>Video 73%</span>
+        <span class="format-pill"><span class="format-dot staticc"></span>Static 26%</span>
+        <span class="format-pill"><span class="format-dot carousel"></span>Carousel 1%</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Main CTA</div>
+      <div class="stat-value" style="font-size:22px;">Install now</div>
+      <div class="stat-sub">Direct app install</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Core Positioning</div>
+    <div class="positioning-text">"The world's #1 language learning app — free, fun, effortless."</div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Messaging Angles</div>
+    <div class="messaging-list">
+      <div class="messaging-item">
+        <span class="messaging-key">Repeated Hook</span>
+        <span class="messaging-val">"Duolingo is the world's #1 language learning app" — consistently repeated across all creatives</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Core Message</span>
+        <span class="messaging-val">Social proof (#1), free access, low effort (Minutes a Day)</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Emotional Tone</span>
+        <span class="messaging-val">Fun · Motivating · No pressure</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Key Signal</span>
+        <span class="messaging-val">"More than a game. Learn chess, math, music" → expanding beyond language into a multi-subject learning platform</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Creative Formats</div>
+    <div class="format-items">
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          Screen Recording
+          <span class="format-pct-badge">50%</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Real-time capture of in-app UI. Gives users a direct "this is how it actually works" feel — effective at converting curiosity into install intent.</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=947887694626865" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          Demo
+          <span class="format-pct-badge">12%</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Edited walkthroughs of specific features. More polished than raw screen recording — designed to highlight a specific value prop rather than show everything.</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=1391581222995727" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          Headline
+          <span class="format-pct-badge">12%</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Bold copy-first format — static or minimal animation. Relies on the message itself to stop the scroll. Used for their strongest claims (#1, free).</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=1284866500405429" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          Skit
+          <span class="format-pct-badge">10%</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Short drama or comedy scenario that frames a relatable situation. Product placed naturally within entertainment — lowers ad-detection guard.</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=975665461463679" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          Montage
+          <span class="format-pct-badge">6%</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Rapid-cut scenes stitched together. Used to compress multiple features or contexts into a short runtime — good for breadth, not depth.</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=1391581222995727" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Overlap with Speak</div>
+    <div class="overlap-items">
+      <div class="overlap-item">
+        <span class="overlap-badge badge-safe">✅ No Conflict</span>
+        <span class="overlap-text">No Korea-specific messaging. Duolingo's AI speaking improvement angle doesn't directly compete with Speak's core positioning.</span>
+      </div>
+      <div class="overlap-item">
+        <span class="overlap-badge badge-watch">👀 Watch</span>
+        <span class="overlap-text">Chess/math/music expansion signals a repositioning toward "self-improvement habit app." Long-term, this could compete for the same persona (goal-oriented adults) that Speak targets.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Recent Active Ads</div>
+    <div class="ad-list">
+      <div class="ad-item">
+        <div class="ad-headline">Free Language Learning</div>
+        <div class="ad-copy">Duolingo is the world's #1 language learning app</div>
+        <div class="ad-meta">
+          <span class="ad-tag">Video</span><span class="ad-tag">Install now</span>
+          <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=1391581222995727" target="_blank">↗ View Ad</a>
+        </div>
+      </div>
+      <div class="ad-item">
+        <div class="ad-headline">The world's #1 learning app</div>
+        <div class="ad-copy">More than a game. Learn chess, math, music and more for free with Duolingo.</div>
+        <div class="ad-meta">
+          <span class="ad-tag">Video</span><span class="ad-tag">⚠️ Category expansion</span>
+          <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=2456450701536125" target="_blank">↗ View Ad</a>
+        </div>
+      </div>
+      <div class="ad-item">
+        <div class="ad-headline">Build Your Language Fluency</div>
+        <div class="ad-copy">Learn a Language for Free in just a few Minutes a Day</div>
+        <div class="ad-meta">
+          <span class="ad-tag">Image</span><span class="ad-tag">Habit-building</span>
+          <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=1284866500405429" target="_blank">↗ View Ad</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ════════════════ SAYVOCA ════════════════ -->
+<div id="page-malhaevoca" class="page">
+
+  <div class="brand-row">
+    <img class="brand-logo" src="https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-1/300002611_612256106953586_8089822578021476969_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=418b77&_nc_ohc=NDd5iCaumDwQ7kNvwFpEkxE&_nc_oc=Adlnh4Ahjk7v0PtIb-ravfolm1iTvE94kwIX0eWN81fMUkqYnIhsl1o_Ub3dAchTgM8&_nc_zt=24&_nc_ht=scontent-iad3-2.xx&_nc_gid=bNy_1yCDoP7gKiqYrf5Ewg&oh=00_AfX2engnqj-4D-WeYqzRpMBkO4AcYX0iIfns7nsECMh6pA&oe=6895FB89" alt="SayVoca">
+    <div>
+      <div class="brand-info-name">SayVoca (말해보카)</div>
+      <div class="brand-info-meta">Education · App (epop.ai) · 261K followers</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Active Ads</div>
+      <div class="stat-value">150</div>
+      <div class="stat-sub">of 590 total</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Format</div>
+      <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 83% · Static 11%</div>
+      <div class="format-bar">
+        <div class="format-bar-video" style="width:83%"></div>
+        <div class="format-bar-staticc" style="width:11%"></div>
+        <div class="format-bar-carousel" style="width:6%"></div>
+      </div>
+      <div class="format-pill-row">
+        <span class="format-pill"><span class="format-dot video"></span>Video 83%</span>
+        <span class="format-pill"><span class="format-dot staticc"></span>Static 11%</span>
+        <span class="format-pill"><span class="format-dot carousel"></span>Carousel 6%</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Main CTA</div>
+      <div class="stat-value" style="font-size:22px;">Learn more</div>
+      <div class="stat-sub">App install + premium conversion</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Core Positioning</div>
+    <div class="positioning-text">"10 million people are hooked — vocab to speaking, all in one app."</div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Messaging Angles</div>
+    <div class="messaging-list">
+      <div class="messaging-item">
+        <span class="messaging-key">Repeated Hook</span>
+        <span class="messaging-val">"천만 명이 중독된 데에는 다 이유가 있습니다" (10M people are addicted for a reason) — same copy across dozens of creatives</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Core Message</span>
+        <span class="messaging-val">Beats "new year's resolution" failure, more addictive than Reels, all-in-one (vocab + pronunciation + conversation + grammar)</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Emotional Tone</span>
+        <span class="messaging-val">FOMO (10M already doing it) · Ease (this one app is enough) · Achievement</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Key Signal</span>
+        <span class="messaging-val">Heavy landing on epop.ai/ko/premium → testing shift from app install to web subscription model</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Creative Formats</div>
+    <div class="format-items">
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          UGC (Influencer Review)
+          <span class="format-pct-badge">Dominant</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Creators naturally share their real experience using the app. Core strategy: make it not look like an ad. The same copy is amplified across multiple creators simultaneously.</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=1581964109582390" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          Real-life Simulation
+          <span class="format-pct-badge">Active</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Dramatizes real situations where English is needed — travel, work, daily life. Creates instant "I've been there" identification before showing the solution.</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=2804108859943068" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          Quiz-style (Engagement Bait)
+          <span class="format-pct-badge">Testing</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Throws a vocab or expression question at the viewer, inviting comment replies. Algorithm-friendly, good for reach expansion over conversion.</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=966497682870032" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Overlap with Speak</div>
+    <div class="overlap-items">
+      <div class="overlap-item">
+        <span class="overlap-badge badge-threat">⚠️ Threat</span>
+        <span class="overlap-text">Actively pushing pronunciation correction + speaking + conversation together. "Precise diagnosis of where your pronunciation went wrong" directly collides with Speak's core value proposition.</span>
+      </div>
+      <div class="overlap-item">
+        <span class="overlap-badge badge-watch">👀 Watch</span>
+        <span class="overlap-text">Same persona (Korean users wanting to restart English) means direct ad auction competition for the same audience segment.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Recent Active Ads</div>
+    <div class="ad-list">
+      <div class="ad-item">
+        <div class="ad-headline">🔥 10 million people already living their English life</div>
+        <div class="ad-copy">"천만 명이 중독된 데에는 다 이유가 있습니다" — If English always failed after 3 days, there's a reason 10M people are hooked.</div>
+        <div class="ad-meta">
+          <span class="ad-tag">Video</span><span class="ad-tag">Core hook · Heavy spend</span>
+          <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=1581964109582390" target="_blank">↗ View Ad</a>
+        </div>
+      </div>
+      <div class="ad-item">
+        <div class="ad-headline">English you can actually use abroad ✈️</div>
+        <div class="ad-copy">"Hello… Um… I need…" — Who's been stuck like this at a hotel front desk? ✋</div>
+        <div class="ad-meta">
+          <span class="ad-tag">Video</span><span class="ad-tag">Real-life · Travel</span>
+          <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=2804108859943068" target="_blank">↗ View Ad</a>
+        </div>
+      </div>
+      <div class="ad-item">
+        <div class="ad-headline">Lightweight 🥴 ← In English?</div>
+        <div class="ad-copy">Drop your answer in the comments! 💜 Hint: I'm a l****weight.</div>
+        <div class="ad-meta">
+          <span class="ad-tag">Video</span><span class="ad-tag">Quiz · Engagement</span>
+          <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=966497682870032" target="_blank">↗ View Ad</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ════════════════ RINGLE ════════════════ -->
+<div id="page-ringle" class="page">
+
+  <div class="brand-row">
+    <img class="brand-logo" src="https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-1/358687623_767804962017299_8517806433064746079_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=107&ccb=1-7&_nc_sid=418b77&_nc_ohc=nM0V1skTzvIQ7kNvwFNGW3F&_nc_oc=Admla2tR6_8cBnJ30mdspQlD8PwFLN1dqt6P9oOUeKaqNTitEMFAt1_icuLoUdwiiSU&_nc_zt=24&_nc_ht=scontent-iad3-1.xx&_nc_gid=v2kybkCEISfdrV22JLiDeA&oh=00_AfTR7io2v08NZitA6USN_ltRkqaNjYOAm7XwFeRMcXtWBA&oe=6884A56F" alt="Ringle">
+    <div>
+      <div class="brand-info-name">Ringle 1:1 English</div>
+      <div class="brand-info-meta">Education · SaaS · 51K followers · Most active ads among competitors</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Active Ads</div>
+      <div class="stat-value">161</div>
+      <div class="stat-sub">Highest among competitors</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Format</div>
+      <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 57% · Static 43%</div>
+      <div class="format-bar">
+        <div class="format-bar-video" style="width:57%"></div>
+        <div class="format-bar-staticc" style="width:43%"></div>
+      </div>
+      <div class="format-pill-row">
+        <span class="format-pill"><span class="format-dot video"></span>Video 57%</span>
+        <span class="format-pill"><span class="format-dot staticc"></span>Static 43%</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Main CTA</div>
+      <div class="stat-value" style="font-size:22px;">Learn More</div>
+      <div class="stat-sub">B2C purchase + B2B lead mix</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Core Positioning</div>
+    <div class="positioning-text">"Results-first English — 1:1 with Ivy League tutors, English that changes your career."</div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Messaging Angles</div>
+    <div class="messaging-list">
+      <div class="messaging-item">
+        <span class="messaging-key">Repeated Hook</span>
+        <span class="messaging-val">"Results-first English, Ringle" · "Getting better than yesterday" — being built into brand slogans</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Core Message</span>
+        <span class="messaging-val">Proven results, Ivy League authority, career growth, #1 revenue in Korea</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Emotional Tone</span>
+        <span class="messaging-val">Achievement · Expertise · Trust (authority)</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Key Signal</span>
+        <span class="messaging-val">Heavy investment in B2B HR lead magnets — featuring Apple/TikTok leaders, directly targeting corporate training/welfare budgets</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Creative Formats</div>
+    <div class="format-items">
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          UGC Career Stories
+          <span class="format-pct-badge">B2C Lead</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Real users share their English growth and career success story. Combines authority (Ivy League tutors) with social proof (real users) — dual credibility stack.</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=1294040222658108" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          B2B Lead Magnet Static
+          <span class="format-pct-badge">B2B Lead</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Free HR guidebook/PDF as bait to convert corporate HR managers into leads. Clean, information-dense design — emotion is replaced by utility.</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=1660927854947081" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+      <details class="format-toggle">
+        <summary>
+          <span class="format-toggle-arrow">▶</span>
+          Limited-time Promo
+          <span class="format-pct-badge">Conversion</span>
+        </summary>
+        <div class="format-toggle-body">
+          <div class="format-desc">Up to 55% off, deadline countdown. Price urgency format — drives immediate conversion from users already in consideration.</div>
+          <a class="ref-link" href="https://www.facebook.com/ads/library/?id=924002310635640" target="_blank">↗ View Reference Ad</a>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Overlap with Speak</div>
+    <div class="overlap-items">
+      <div class="overlap-item">
+        <span class="overlap-badge badge-watch">👀 Watch</span>
+        <span class="overlap-text">Career-focused adult persona overlaps. "Results-first English" positioning competes with Speak's AI skill improvement angle. However, Ringle's core is human tutors 1:1 — no AI automation component.</span>
+      </div>
+      <div class="overlap-item">
+        <span class="overlap-badge badge-safe">✅ No Conflict</span>
+        <span class="overlap-text">B2B HR lead magnet strategy is in a separate lane from Speak's individual user targeting.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Recent Active Ads</div>
+    <div class="ad-list">
+      <div class="ad-item">
+        <div class="ad-headline">1:1 English with Ivy League tutors</div>
+        <div class="ad-copy">The goal of learning English is one thing: getting better than yesterday. We design practice that leaves results.</div>
+        <div class="ad-meta">
+          <span class="ad-tag">Video</span><span class="ad-tag">Core brand · Heavy spend</span>
+          <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=1479600500565188" target="_blank">↗ View Ad</a>
+        </div>
+      </div>
+      <div class="ad-item">
+        <div class="ad-headline">Career Up Promotion OPEN</div>
+        <div class="ad-copy">🚀 English and career, both at once. Career Up special lessons up to 55% off. Until April 30.</div>
+        <div class="ad-meta">
+          <span class="ad-tag">Image</span><span class="ad-tag">Limited promo</span>
+          <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=924002310635640" target="_blank">↗ View Ad</a>
+        </div>
+      </div>
+      <div class="ad-item">
+        <div class="ad-headline">[Free] 12-hour HR Webinar Summary (42p)</div>
+        <div class="ad-copy">🤖 Real HR answers that GPT doesn't know. Free Q&A PDF from Apple & TikTok leaders.</div>
+        <div class="ad-meta">
+          <span class="ad-tag">Image</span><span class="ad-tag">B2B lead magnet</span>
+          <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=1660927854947081" target="_blank">↗ View Ad</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ════════════════ SPEAK ════════════════ -->
+<div id="page-speak" class="page">
+
+  <div class="brand-row">
+    <div class="brand-logo-placeholder">S</div>
+    <div>
+      <div class="brand-info-name">Speak</div>
+      <div class="brand-info-meta">Speak Main Workspace · Last 30 days · Goal: cost_per_trial_start_mobile</div>
+    </div>
+  </div>
+
+  <!-- Country sub-nav -->
+  <div class="country-nav">
+    <div class="country-tab active" onclick="switchCountry('jp', this)">🇯🇵 Japan</div>
+    <div class="country-tab" onclick="switchCountry('kr', this)">🇰🇷 Korea</div>
+    <div class="country-tab" onclick="switchCountry('tw', this)">🇹🇼 Taiwan</div>
+    <div class="country-tab" onclick="switchCountry('hk', this)">🇭🇰 HK / Macau</div>
+    <div class="country-tab" onclick="switchCountry('us-tiktok', this)">TikTok US</div>
+    <div class="country-tab" onclick="switchCountry('us-meta', this)">Meta US</div>
+  </div>
+
+  <!-- Japan -->
+  <div id="country-jp" class="country-page active">
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Active Ads</div>
+        <div class="stat-value">26</div>
+        <div class="stat-sub">of 48 ad instances · $178.9K spend (30d)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Format</div>
+        <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 80% · Static 20%</div>
+        <div class="format-bar">
+          <div class="format-bar-video" style="width:80%"></div>
+          <div class="format-bar-staticc" style="width:20%"></div>
+        </div>
+        <div class="format-pill-row">
+          <span class="format-pill"><span class="format-dot video"></span>Video 80%</span>
+          <span class="format-pill"><span class="format-dot staticc"></span>Static 20%</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Main CTA</div>
+        <div class="stat-value" style="font-size:22px;">Install App</div>
+        <div class="stat-sub">Direct app install</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Core Positioning (JP)</div>
+      <div class="positioning-text">"いつでもどこでも — AI英会話で英語を話す習慣"<br><span style="font-size:14px; font-weight:400; color:var(--text3);">"Anywhere, anytime — build an English speaking habit with AI conversation"</span></div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Messaging Angles (JP)</div>
+      <div class="messaging-list">
+        <div class="messaging-item">
+          <span class="messaging-key">Repeated Hook</span>
+          <span class="messaging-val">"いつでもどこでもスキマ時間に" — utilizing small pockets of spare time, consistently emphasized</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Core Message</span>
+          <span class="messaging-val">AI convenience, available 24/7, limited-time discount (up to ¥6,000 off)</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Emotional Tone</span>
+          <span class="messaging-val">Convenience · Low barrier · FOMO (limited time)</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Key Signal</span>
+          <span class="messaging-val">Discount promo creatives have highest CTR at 2.0% — price sensitivity is a strong conversion driver in JP market</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Top Creatives — Last 30 Days (by Spend)</div>
+      <div class="ad-list">
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/66e8d6db40ce170c9e206fff/adunit/69d47bc24dbfa8a40babdb6b/thumbnail/52362812-3e9e-4c17-8fa2-5809eb99dbb5.jpg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#1 · JP_E211_maru_Vlog-quiz</div>
+            <div class="speak-text">いつでもどこでもスキマ時間にAI英会話スピーク</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$83,558</strong></span>
+              <span class="speak-metric">CTR <strong>0.84%</strong></span>
+              <span class="speak-metric" style="color:var(--threat);">● Declining</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/66e8d6db40ce170c9e206fff/adunit/69a7cfab627a9fffb7413fec/thumbnail/a55999a6-6773-4b97-a2f3-a56269cbcb57.jpg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#2 · E26-UGC-ProductDemo-hand-wash</div>
+            <div class="speak-text">スピーキング特化のAI英会話アプリ</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$37,770</strong></span>
+              <span class="speak-metric">CTR <strong>0.62%</strong></span>
+              <span class="speak-metric" style="color:var(--watch);">● Holding</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/66e8d6db40ce170c9e206fff/adunit/69d4a5f04dbfa8a40bfaba63/thumbnail/07d3120e-27fb-43a5-a89c-5ab3827e9a09.png" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#3 · E91-Discount-Promo-bloo-simple</div>
+            <div class="speak-text">期間限定、最大6,000円割引中。「いつか始めよう」が、今日になるキャンペーンです。</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$21,920</strong></span>
+              <span class="speak-metric">CTR <strong>1.83%</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/66e8d6db40ce170c9e206fff/adunit/69cc84161ae2df5b3cd97316/thumbnail/66c711fd-6001-4122-bfe4-2f2f90b0561f.png" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#4 · E89-Discount-1480yen-simple</div>
+            <div class="speak-text">期間限定、最大6,000円割引中。はじめの7日間は無料。月1,480円〜。</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$18,562</strong></span>
+              <span class="speak-metric">CTR <strong style="color:var(--safe);">2.00% 🏆</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/66e8d6db40ce170c9e206fff/adunit/69cc84161ae2df5b3cd97326/thumbnail/e1b63224-a782-4384-9ffe-3443d18974c9.png" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#5 · E84-Image-official-letter</div>
+            <div class="speak-text">期間限定、最大6,000円割引中。はじめの7日間は無料。</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$17,047</strong></span>
+              <span class="speak-metric">CTR <strong>0.74%</strong></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Competitive Observations</div>
+      <div class="messaging-list">
+        <div class="messaging-item">
+          <span class="messaging-key">Strength</span>
+          <span class="messaging-val">Discount promo CTR (2.0%) significantly above competitor benchmarks. Price sensitivity is a confirmed and powerful conversion driver in the JP market.</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Opportunity</span>
+          <span class="messaging-val">No competitor is directly positioning AI feedback as the core differentiator. A tech-forward "AI analyzes your speaking" creative angle is wide open.</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Watch</span>
+          <span class="messaging-val">Top creative is declining. Heavy reliance on discount promos risks anchoring brand on price rather than building long-term positioning equity.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Korea -->
+  <div id="country-kr" class="country-page">
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Active Ads</div>
+        <div class="stat-value">3</div>
+        <div class="stat-sub">of 39 ad instances · $18.3K spend (30d)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Format</div>
+        <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 40% · Static 60%</div>
+        <div class="format-bar">
+          <div class="format-bar-video" style="width:40%"></div>
+          <div class="format-bar-staticc" style="width:60%"></div>
+        </div>
+        <div class="format-pill-row">
+          <span class="format-pill"><span class="format-dot video"></span>Video 40%</span>
+          <span class="format-pill"><span class="format-dot staticc"></span>Static 60%</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Main CTA</div>
+        <div class="stat-value" style="font-size:22px;">Subscribe</div>
+        <div class="stat-sub">Web purchase · No discount</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Messaging Signal (KR)</div>
+      <div class="messaging-list">
+        <div class="messaging-item">
+          <span class="messaging-key">Repeated Hook</span>
+          <span class="messaging-val">"몇 년 공부해도 안 늘던 영어, '이것' 하나 바꿨더니 바로 나옵니다" — Years of studying didn't help, but one thing changed everything</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Core Message</span>
+          <span class="messaging-val">Speak's "mouth memory" concept — keeps you speaking until your mouth remembers. Real user testimonials. Speaking challenge with gamification.</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Key Signal</span>
+          <span class="messaging-val">Web-only funnel (no app install campaign), no discount — KR is being pushed toward direct subscription conversion. Influencer dondok.bro is top spend creative.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Top Creatives — Last 30 Days (by Spend)</div>
+      <div class="ad-list">
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/66e8d6db40ce170c9e206fff/adunit/69b925ebc32a3e3756014c79/thumbnail/0e502b22-e213-45a7-94f4-4fbff4081817.jpg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#1 · dondok.bro · Partnership Influencer · Video</div>
+            <div class="speak-text">Influencer partnership post — boosted organic</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$5,808</strong></span>
+              <span class="speak-metric">CTR <strong style="color:var(--safe);">1.12% 🏆</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/66e8d6db40ce170c9e206fff/adunit/69c6b6043ea1439320081436/thumbnail/0d030553-a88b-4f72-9e73-0ea99ccb04c9.jpg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#2 · UGC · Value Prop · Travel BG · Video</div>
+            <div class="speak-text">"몇 년 공부해도 안 늘던 영어, '이것' 하나 바꿨더니 바로 나옵니다." — Speak keeps making you speak until your mouth remembers it</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$4,351</strong></span>
+              <span class="speak-metric">CTR <strong>0.97%</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/66e8d6db40ce170c9e206fff/adunit/69d265524dbfa8a40b54e2f1/thumbnail/523c85e8-e871-435c-9946-458a8ca3a0e8.jpg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#3 · Generic · Value Prop · Real User Reviews · Static</div>
+            <div class="speak-text">"스픽 유저들의 리얼 후기" — Real reviews from Speak users</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$3,485</strong></span>
+              <span class="speak-metric">CTR <strong>0.55%</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/66e8d6db40ce170c9e206fff/adunit/69c09d2e3ea1439320936cf9/thumbnail/110a40f8-fff3-4361-9ff1-b9a28b496775.jpg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#5 · Generic · Problem-Solution · Speaking Challenge · Static</div>
+            <div class="speak-text">"매일 딱 100문장! 14일만 버티면..." — 100 sentences/day · 14-day challenge · iPad prize</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$2,209</strong></span>
+              <span class="speak-metric">CTR <strong>1.08%</strong></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Taiwan -->
+  <div id="country-tw" class="country-page">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Active Ads</div>
+        <div class="stat-value">14</div>
+        <div class="stat-sub">of 22 ad instances · $17.5K spend (30d)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Format</div>
+        <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 67% · Static 33%</div>
+        <div class="format-bar">
+          <div class="format-bar-video" style="width:67%"></div>
+          <div class="format-bar-staticc" style="width:33%"></div>
+        </div>
+        <div class="format-pill-row">
+          <span class="format-pill"><span class="format-dot video"></span>Video 67%</span>
+          <span class="format-pill"><span class="format-dot staticc"></span>Static 33%</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Main CTA</div>
+        <div class="stat-value" style="font-size:22px;">Free Trial</div>
+        <div class="stat-sub">7-day trial · 新用戶免費試用 7 天</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Messaging Signal (TW)</div>
+      <div class="messaging-list">
+        <div class="messaging-item">
+          <span class="messaging-key">Angle</span>
+          <span class="messaging-val">English for interviews + career advancement — "Speak 系統化學習練就面試即戰力" (Systematic learning builds interview English power)</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Format Mix</span>
+          <span class="messaging-val">Influencer product demo is the dominant format — matamata.chan.92 "Living in Japan" angle has highest CTR (3.33%)</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Key Signal</span>
+          <span class="messaging-val">Influencer with overseas living story resonates strongly in TW — aspirational, not just utilitarian</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Top Creatives — Last 30 Days (by Spend)</div>
+      <div class="ad-list">
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/67d498f25bb5317ccfcc1d01/adunit/69c171f63ea1439320690bcb/thumbnail/8f223cae-6d88-4a88-b9d0-01bc960693ce.jpg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#1 · matamata.chan.92 · Influencer · Original-Living-In-Japan</div>
+            <div class="speak-text">Influencer product demo — overseas living angle</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$8,180</strong></span>
+              <span class="speak-metric">CTR <strong style="color:var(--safe);">3.33% 🏆</strong></span>
+              <span class="speak-metric"><strong>Video</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/67d498f25bb5317ccfcc1d01/adunit/6936cf48e400180cbdfbf138/thumbnail/0a2c25e3-e423-4c24-a05d-560a7d968fc5.jpeg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#2 · harryspeaks_ · Influencer · Speak company value prop</div>
+            <div class="speak-text">Official Speak influencer — value proposition angle</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$5,732</strong></span>
+              <span class="speak-metric">CTR <strong>1.08%</strong></span>
+              <span class="speak-metric"><strong>Video</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/67d498f25bb5317ccfcc1d01/adunit/69df4c07e23fb80927319a86/thumbnail/a199adcf-bb96-4f27-bd57-ad36b9a1ad55.jpg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#3 · S22A2 · Single Testimonial · zh-en</div>
+            <div class="speak-text">Speak 系統化學習練就面試即戰力 — 新用戶免費試用 7 天</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$3,541</strong></span>
+              <span class="speak-metric">CTR <strong>0.92%</strong></span>
+              <span class="speak-metric"><strong>Static</strong></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- HK/Macau -->
+  <div id="country-hk" class="country-page">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Active Ads</div>
+        <div class="stat-value">3</div>
+        <div class="stat-sub">of 4 ad instances · $7.7K spend (30d)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Format</div>
+        <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 100%</div>
+        <div class="format-bar">
+          <div class="format-bar-video" style="width:100%"></div>
+        </div>
+        <div class="format-pill-row">
+          <span class="format-pill"><span class="format-dot video"></span>Video 100%</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Main CTA</div>
+        <div class="stat-value" style="font-size:22px;">Free Trial</div>
+        <div class="stat-sub">iOS trial · AEM campaign</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Messaging Signal (HK)</div>
+      <div class="messaging-list">
+        <div class="messaging-item">
+          <span class="messaging-key">Angle</span>
+          <span class="messaging-val">UGC-first — English for real life: learning new languages + business small talk pain points</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Standout</span>
+          <span class="messaging-val">HK's top creative has 5.11% CTR — highest across all markets. UGC testimonial format is clearly winning here.</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Key Signal</span>
+          <span class="messaging-val">Both active creatives are UGC (hayes creator). Small but efficient — two creatives, very high engagement rates.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Top Creatives — Last 30 Days (by Spend)</div>
+      <div class="ad-list">
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/67d498f25bb5317ccfcc1d01/adunit/6966794c06f16fea235920b4/thumbnail/38f47bcc-9e32-4512-bde9-345bc3b5ff0e.jpg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#1 · UGC53 · Testimonial · hayes-noframe · Learn New Languages</div>
+            <div class="speak-text">UGC testimonial — learn new languages angle</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$4,313</strong></span>
+              <span class="speak-metric">CTR <strong style="color:var(--safe);">5.11% 🏆</strong></span>
+              <span class="speak-metric"><strong>Video</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="https://motionaccountassets.blob.core.windows.net/67d498f25bb5317ccfcc1d01/adunit/69a7a233627a9fffb7fb7b2e/thumbnail/a7a5bd89-e75d-4bd3-88f1-ad665766b052.jpg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#2 · UGC53 · Value Prop · hayes-businesssmalltalk · Pain Point</div>
+            <div class="speak-text">UGC value prop — business small talk pain point</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$3,370</strong></span>
+              <span class="speak-metric">CTR <strong>0.62%</strong></span>
+              <span class="speak-metric"><strong>Video</strong></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TikTok US -->
+  <div id="country-us-tiktok" class="country-page">
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Active Ads</div>
+        <div class="stat-value">3</div>
+        <div class="stat-sub">Q4 2025 winners · us_tiktok_en-es</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Format (Q4 2025)</div>
+        <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 100%</div>
+        <div class="format-bar">
+          <div class="format-bar-video" style="width:100%"></div>
+        </div>
+        <div class="format-pill-row">
+          <span class="format-pill"><span class="format-dot video"></span>UGC Video 100%</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Main CTA</div>
+        <div class="stat-value" style="font-size:22px;">Free Trial</div>
+        <div class="stat-sub">iOS app install · us_tiktok campaigns</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Messaging Signal (TikTok US)</div>
+      <div class="messaging-list">
+        <div class="messaging-item">
+          <span class="messaging-key">Q4 2025 Winners</span>
+          <span class="messaging-val">UGC-heavy: "500-day streak" podcast clips, "progress-noticing" testimonials, side-by-side comparisons of Speak vs. other apps. All under 30s.</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Hook Style</span>
+          <span class="messaging-val">Real user results with a functional comparison angle — "I tried X, but Speak actually worked." Black and white male creators featured prominently (diversity matching).</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Campaign Pattern</span>
+          <span class="messaging-val"><code style="font-size:11px; background:#f5f5f7; padding:2px 6px; border-radius:4px;">us_tiktok_en-es_*</code> — Live 30d data tracked in Motion's TikTok data source. 2026 data not returned via current API cache.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Q4 2025 Top Creatives (Motion Report: "[US] GTM 12.04 Winners")</div>
+      <div class="ad-list">
+
+        <div class="speak-ad-item">
+          <div class="speak-thumb" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); display:flex; align-items:center; justify-content:center; color:white; font-size:22px;">🎙️</div>
+          <div class="speak-body">
+            <div class="speak-name">#1 · UGC · Functional Comparison · Podcast Format · 21s</div>
+            <div class="speak-text">White male creator, 500-day streak critique — "I've tried everything. Speak is the only app where you actually speak." Podcast-style format, candid delivery.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Campaign <strong>us_tiktok (Oct–Dec 2025)</strong></span>
+              <span class="speak-metric">Type <strong>UGC Video</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <div class="speak-thumb" style="background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%); display:flex; align-items:center; justify-content:center; color:white; font-size:22px;">📈</div>
+          <div class="speak-body">
+            <div class="speak-name">#2 · UGC · Product Demo · Progress Noticing · 23s</div>
+            <div class="speak-text">"I started noticing something new every week." User walking through their real progress milestones inside the app. Authenticity-first framing.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Creator <strong>Jessica</strong></span>
+              <span class="speak-metric">Type <strong>UGC Video</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <div class="speak-thumb" style="background: linear-gradient(135deg, #1c0a2e 0%, #2d1b69 100%); display:flex; align-items:center; justify-content:center; color:white; font-size:22px;">🎤</div>
+          <div class="speak-body">
+            <div class="speak-name">#3 · UGC · Functional Comparison · Podcast Format · 30s</div>
+            <div class="speak-text">Black male creator — "Get fluent by 2026." Podcast-style comparison, motivational framing around the new year resolution angle.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Campaign <strong>us_tiktok (Oct–Dec 2025)</strong></span>
+              <span class="speak-metric">Type <strong>UGC Video</strong></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Meta US -->
+  <div id="country-us-meta" class="country-page">
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Active Ads</div>
+        <div class="stat-value">11</div>
+        <div class="stat-sub">10 web + 1 iOS · of 66 ad instances (30d)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Format</div>
+        <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 100%</div>
+        <div class="format-bar">
+          <div class="format-bar-video" style="width:100%"></div>
+        </div>
+        <div class="format-pill-row">
+          <span class="format-pill"><span class="format-dot video"></span>Video 100%</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Main CTA</div>
+        <div class="stat-value" style="font-size:20px;">Purchase / Trial</div>
+        <div class="stat-sub">Web purchase ($18.45/day) · iOS trial</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Messaging Signal (Meta US)</div>
+      <div class="messaging-list">
+        <div class="messaging-item">
+          <span class="messaging-key">Market Focus</span>
+          <span class="messaging-val">Dual-track: <strong>en-es</strong> (Spanish speakers learning English) + <strong>en-xx</strong> (multi-language). Web track pushes direct purchase; iOS track pushes 7-day free trial.</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">Web Campaign Pattern</span>
+          <span class="messaging-val"><code style="font-size:11px; background:#f5f5f7; padding:2px 6px; border-radius:4px;">us_meta_standard_web_default_en-es_pros_purchase_*</code> — "Speak Web US" workspace, all video, Advantage+ campaigns, scaling hard ($19K top creative).</span>
+        </div>
+        <div class="messaging-item">
+          <span class="messaging-key">iOS Campaign Pattern</span>
+          <span class="messaging-val"><code style="font-size:11px; background:#f5f5f7; padding:2px 6px; border-radius:4px;">us_meta_standard_iOS_en-xx_pros_trial_ongoing_no-disc_BAU_10scale</code> — BAU 10s format, en-xx scaling broadly ($15K top creative).</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Top Creatives — Web US (Speak Web US Workspace · Last 30 Days)</div>
+      <div class="ad-list">
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="" alt="" onerror="this.style.background='linear-gradient(135deg,#007aff20,#007aff40)';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#1 · Web Purchase · en-es · Video · <span style="color:var(--safe); font-weight:700;">Scaling 🚀</span></div>
+            <div class="speak-text">Campaign: <code style="font-size:11px;">creoclient1603</code> — Client-submitted creative from Mar 16. Web purchase funnel, no discount. $18.45/day bid target.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$19,071</strong></span>
+              <span class="speak-metric">Status <strong style="color:var(--safe);">Scaling</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="" alt="" onerror="this.style.background='linear-gradient(135deg,#007aff20,#007aff40)';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#2 · Web Purchase · en-es · Video · Holding</div>
+            <div class="speak-text">Campaign: <code style="font-size:11px;">creo2303RW</code> — Rewrite iteration of Mar 23 creative. Holding spend, consistent delivery.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$15,287</strong></span>
+              <span class="speak-metric">Status <strong>Holding</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="" alt="" onerror="this.style.background='linear-gradient(135deg,#007aff20,#007aff40)';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#3 · Web Purchase · en-es · Video · Declining</div>
+            <div class="speak-text">Campaign: <code style="font-size:11px;">creo2303RW</code> — Second variant of the same creative batch. Spend declining from peak.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$11,090</strong></span>
+              <span class="speak-metric">Status <strong style="color:var(--warn);">Declining</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="" alt="" onerror="this.style.background='linear-gradient(135deg,#007aff20,#007aff40)';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#4 · Web Purchase · en-es · Video · <span style="color:var(--safe);">Scaling</span></div>
+            <div class="speak-text">Campaign: <code style="font-size:11px;">creoclient1603</code> — Second scaling variant from same client creative batch. Strong parallel to #1.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$9,803</strong></span>
+              <span class="speak-metric">Status <strong style="color:var(--safe);">Scaling</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="" alt="" onerror="this.style.background='linear-gradient(135deg,#007aff20,#007aff40)';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#5 · Web Purchase · en-es · Video · New</div>
+            <div class="speak-text">Campaign: <code style="font-size:11px;">creo0904</code> — Newest launch (Apr 9). Early spend, entering ramp-up phase.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$8,241</strong></span>
+              <span class="speak-metric">Status <strong>New</strong></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">Top Creatives — iOS US (Main Workspace · Last 30 Days)</div>
+      <div class="ad-list">
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="" alt="" onerror="this.style.background='linear-gradient(135deg,#30d15820,#30d15840)';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#1 · iOS Trial · en-xx · 10s BAU · Video · Declining</div>
+            <div class="speak-text">BAU 10-second ad set persona format. en-xx (multi-language) targeting on iOS. Broad scale campaign — currently declining from peak.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$15,166</strong></span>
+              <span class="speak-metric">Campaign <strong>en-xx BAU 10s</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="" alt="" onerror="this.style.background='linear-gradient(135deg,#30d15820,#30d15840)';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#2 · iOS Trial · en-es · 10s BAU · Video · <span style="color:var(--safe);">Scaling</span></div>
+            <div class="speak-text">en-es (Spanish learners) persona-targeted BAU 10s format. Scaling alongside en-xx. iOS trial funnel, no discount.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$14,932</strong></span>
+              <span class="speak-metric">Status <strong style="color:var(--safe);">Scaling</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="speak-ad-item">
+          <img class="speak-thumb" src="" alt="" onerror="this.style.background='linear-gradient(135deg,#30d15820,#30d15840)';this.src=''">
+          <div class="speak-body">
+            <div class="speak-name">#3 · iOS Trial · en-xx · 10s BAU · UGC · Video · <span style="color:var(--safe);">Scaling</span></div>
+            <div class="speak-text">UGC variant in en-xx BAU 10s scale campaign. UGC + 10s format combination proving strong for iOS trial acquisition.</div>
+            <div class="speak-metrics">
+              <span class="speak-metric">Spend <strong>$14,147</strong></span>
+              <span class="speak-metric">Status <strong style="color:var(--safe);">Scaling</strong></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ════════════════ PREPLY ════════════════ -->
+<div id="page-preply" class="page">
+
+  <div class="brand-row">
+    <img src="https://motionswipefile.blob.core.windows.net/swipe-file-brand-assets-cached-links/brand-page-assets/meta/716282765153594.jpeg" style="width:48px;height:48px;border-radius:12px;object-fit:cover;" onerror="this.style.display='none'">
+    <div>
+      <div class="brand-info-name">Preply</div>
+      <div class="brand-info-meta">Online Tutoring · SaaS · 652 active ads · 354K followers</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Active Ads</div>
+      <div class="stat-value">652</div>
+      <div class="stat-sub">of Meta ad library · longest runner 137d+</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Format</div>
+      <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 80% · Image 20%</div>
+      <div class="format-bar">
+        <div class="format-bar-video" style="width:80%"></div>
+        <div class="format-bar-staticc" style="width:20%"></div>
+      </div>
+      <div class="format-pill-row">
+        <span class="format-pill"><span class="format-dot video"></span>Video 80%</span>
+        <span class="format-pill"><span class="format-dot staticc"></span>Image 20%</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Main CTA</div>
+      <div class="stat-value" style="font-size:22px;">Book Now</div>
+      <div class="stat-sub">Tutor match flow · preply.com/en/online/english-tutors</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Core Positioning</div>
+    <div class="messaging-list">
+      <div class="messaging-item">
+        <span class="messaging-key">Primary Angle</span>
+        <span class="messaging-val">"Find your ideal tutor" via personalized matching filters. Human-first positioning — learning is better with the right person, not just any AI.</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Trust Signals</span>
+        <span class="messaging-val">Social proof-heavy: ⭐⭐⭐⭐⭐ reviews in ad copy, user quotes ("I knew I found my perfect tutor after the second lesson" — Ivan). Subscription + flexibility framing.</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Funnel Strategy</span>
+        <span class="messaging-val">Direct to English tutor landing page AND Play Store (Android growth push). Running both web conversion + app install tracks simultaneously at massive scale (652 active).</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Signal vs. Speak</span>
+        <span class="messaging-val">Preply wins on trust/personalization; Speak wins on AI accessibility. Preply's weakness: "find the right tutor" implies effort — Speak's AI is zero-friction by comparison.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Longest-Running Active Creatives (Conviction Signals)</div>
+    <div class="ad-list">
+
+      <div class="speak-ad-item">
+        <img class="speak-thumb" src="https://motionswipefile.blob.core.windows.net/swipe-file-cached-links/swipe-file-source-link/699132659163856/6810b53a6364c3b79045a4cf/ef4071bf-0f2a-4116-ab57-669c59ce3896.jpeg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+        <div class="speak-body">
+          <div class="speak-name">#1 · Video · "Find your ideal tutor" · 137d active</div>
+          <div class="speak-text">"Use our personalized filters to match with the best tutor for you. 🤝" → Book now</div>
+          <div class="speak-metrics">
+            <span class="speak-metric">Launched <strong>Apr 28, 2025</strong></span>
+            <span class="speak-metric">Status <strong style="color:var(--safe);">Active 137d</strong></span>
+            <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=699132659163856" target="_blank">↗ View Ad</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="speak-ad-item">
+        <img class="speak-thumb" src="https://motionswipefile.blob.core.windows.net/swipe-file-cached-links/swipe-file-source-link/628703873533207/682c7305f2c579cd6650d3c3/2efcaa5b-366d-488a-ab3a-d7e6db4d8d18.jpeg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+        <div class="speak-body">
+          <div class="speak-name">#2 · Video · "Regular lessons = real progress" · 112d active</div>
+          <div class="speak-text">"Take regular language lessons to really notice the progress." — "Subscribe to flexibility, progress and success." ⭐⭐⭐⭐⭐ Ivan quote.</div>
+          <div class="speak-metrics">
+            <span class="speak-metric">Launched <strong>May 19, 2025</strong></span>
+            <span class="speak-metric">Status <strong style="color:var(--safe);">Active 112d</strong></span>
+            <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=628703873533207" target="_blank">↗ View Ad</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="speak-ad-item">
+        <img class="speak-thumb" src="https://motionswipefile.blob.core.windows.net/swipe-file-cached-links/swipe-file-source-link/695783519905963/684d7a67882deff3c6b4d666/16bb0a1c-6956-460e-9603-2bd2abcdfde5.jpeg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+        <div class="speak-body">
+          <div class="speak-name">#3 · Video · "Speak confidently with a Preply tutor" · 78d active</div>
+          <div class="speak-text">"Find the best tutor for you and start seeing the progress you've been looking for. 🎓" — App install (Android) landing.</div>
+          <div class="speak-metrics">
+            <span class="speak-metric">Launched <strong>Jun 13, 2025</strong></span>
+            <span class="speak-metric">Status <strong style="color:var(--safe);">Active 78d</strong></span>
+            <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=695783519905963" target="_blank">↗ View Ad</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ════════════════ PROMOVA ════════════════ -->
+<div id="page-promova" class="page">
+
+  <div class="brand-row">
+    <img src="https://motionswipefile.blob.core.windows.net/swipe-file-brand-assets-cached-links/brand-page-assets/meta/101749628198714.jpeg" style="width:48px;height:48px;border-radius:12px;object-fit:cover;" onerror="this.style.display='none'">
+    <div>
+      <div class="brand-info-name">Promova</div>
+      <div class="brand-info-meta">Language Learning App · 796 active ads · 6.3M followers</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Active Ads</div>
+      <div class="stat-value">796</div>
+      <div class="stat-sub">of Meta ad library · longest runner 230d+</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Format</div>
+      <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 60% · Image 40%</div>
+      <div class="format-bar">
+        <div class="format-bar-video" style="width:60%"></div>
+        <div class="format-bar-staticc" style="width:40%"></div>
+      </div>
+      <div class="format-pill-row">
+        <span class="format-pill"><span class="format-dot video"></span>Video 60%</span>
+        <span class="format-pill"><span class="format-dot staticc"></span>Image 40%</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Main CTA</div>
+      <div class="stat-value" style="font-size:22px;">Download</div>
+      <div class="stat-sub">7-day free trial · multi-language app</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Core Positioning</div>
+    <div class="messaging-list">
+      <div class="messaging-item">
+        <span class="messaging-key">Multi-market Machine</span>
+        <span class="messaging-val">Targeting Spanish learners (english-improve.com, spanish-boost.com) AND Spanish speakers learning English AND Business English professionals simultaneously. 796 active ads = high-volume testing engine.</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Primary Hook</span>
+        <span class="messaging-val">"Start speaking [Language] in 2 months" — outcome-focused, specific timeline. Also uses access framing: "Open doors to 400M Spanish speakers." Market-size angle.</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Business English Track</span>
+        <span class="messaging-val">"Boost your career with Business English" + "Climb the corporate ladder 📈" — separate B2B-adjacent funnel. Distinct landing pages per audience (english-improve.com).</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Signal vs. Speak</span>
+        <span class="messaging-val">Promova is a direct head-to-head competitor in the US Spanish-English market. Their 230d+ long-runner (static image, Spanish learning) signals strong cost efficiency on simple formats.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Longest-Running Active Creatives (Conviction Signals)</div>
+    <div class="ad-list">
+
+      <div class="speak-ad-item">
+        <img class="speak-thumb" src="https://motionswipefile.blob.core.windows.net/swipe-file-cached-links/swipe-file-source-link/495639929908677/67a2e1110a70ccc0c58c8332/ed9b1f3e-371b-4a78-bc66-045dbec34398.jpeg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+        <div class="speak-body">
+          <div class="speak-name">#1 · Static Image · "Start speaking Spanish in 2 months" · 230d active 🏆</div>
+          <div class="speak-text">"Experience online Spanish learning at its best. ✅ Start your 7-day free trial and enjoy everyday progress 🇪🇸" — spanish-boost.com</div>
+          <div class="speak-metrics">
+            <span class="speak-metric">Launched <strong>Feb 4, 2025</strong></span>
+            <span class="speak-metric">Status <strong style="color:var(--safe);">Active 230d</strong></span>
+            <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=495639929908677" target="_blank">↗ View Ad</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="speak-ad-item">
+        <img class="speak-thumb" src="https://motionswipefile.blob.core.windows.net/swipe-file-cached-links/swipe-file-source-link/1397932211294458/67a428190a70ccc0c5397a9d/1318989c-f667-476e-9d20-110f33206ba1.jpeg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+        <div class="speak-body">
+          <div class="speak-name">#2 · Video · "Learn Spanish 10 min a day" · 220d active</div>
+          <div class="speak-text">"Open the doors to communicate with 400M Spanish speakers of the World 💪" — Spanish is the 2nd most spoken language angle.</div>
+          <div class="speak-metrics">
+            <span class="speak-metric">Launched <strong>Feb 5, 2025</strong></span>
+            <span class="speak-metric">Status <strong style="color:var(--safe);">Active 220d</strong></span>
+            <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=1397932211294458" target="_blank">↗ View Ad</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="speak-ad-item">
+        <img class="speak-thumb" src="https://motionswipefile.blob.core.windows.net/swipe-file-cached-links/swipe-file-source-link/1008742781305063/67b3c57d831d04f1dd2e6840/5f22ffdf-4073-4636-bc9d-983b8d1a25ba.jpeg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+        <div class="speak-body">
+          <div class="speak-name">#3 · Video · "Boost your career — Business English" · Career track</div>
+          <div class="speak-text">"Master workplace communication & excel professionally! 💼" — Separate B2B funnel targeting career-motivated learners on english-improve.com.</div>
+          <div class="speak-metrics">
+            <span class="speak-metric">Launched <strong>Feb 17, 2025</strong></span>
+            <span class="speak-metric">Headline <strong>"Climb the corporate ladder 📈"</strong></span>
+            <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=1008742781305063" target="_blank">↗ View Ad</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ════════════════ JUMPSPEAK ════════════════ -->
+<div id="page-jumpspeak" class="page">
+
+  <div class="brand-row">
+    <img src="https://motionswipefile.blob.core.windows.net/swipe-file-brand-assets-cached-links/brand-page-assets/meta/103581851453799.jpeg" style="width:48px;height:48px;border-radius:12px;object-fit:cover;" onerror="this.style.display='none'">
+    <div>
+      <div class="brand-info-name">Jumpspeak</div>
+      <div class="brand-info-meta">AI Language Immersion App · 1,655 active ads · 248K followers</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Active Ads</div>
+      <div class="stat-value">1,655</div>
+      <div class="stat-sub">of Meta ad library · longest runner 314d+</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Format</div>
+      <div class="stat-value" style="font-size:18px; margin-bottom:6px;">Video 60% · Image 40%</div>
+      <div class="format-bar">
+        <div class="format-bar-video" style="width:60%"></div>
+        <div class="format-bar-staticc" style="width:40%"></div>
+      </div>
+      <div class="format-pill-row">
+        <span class="format-pill"><span class="format-dot video"></span>Video 60%</span>
+        <span class="format-pill"><span class="format-dot staticc"></span>Image 40%</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Main CTA</div>
+      <div class="stat-value" style="font-size:20px;">Sign Up / Learn More</div>
+      <div class="stat-sub">100-day guarantee · jumpspeak.com/flow</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Core Positioning</div>
+    <div class="messaging-list">
+      <div class="messaging-item">
+        <span class="messaging-key">Positioning Frame</span>
+        <span class="messaging-val"><strong>"They're lying to you, language learners."</strong> — Anti-traditional-app attack. Directly names the problem with Duolingo/Babbel (fingers, no speaking, no feedback). Positions Jumpspeak as the honest alternative.</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Proof Point</span>
+        <span class="messaging-val">300K+ happy customers. 100-Day Results or Money-Back Guarantee. 17 languages. AI speech feedback with real-time pronunciation. "Speak on day 1" promise.</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Scale Signal</span>
+        <span class="messaging-val">1,655 active ads = largest ad library of all tracked competitors. 314d longest runner. This level of scale indicates strong unit economics — they've found what works and are repeating it aggressively.</span>
+      </div>
+      <div class="messaging-item">
+        <span class="messaging-key">Signal vs. Speak</span>
+        <span class="messaging-val">Very similar product positioning to Speak — both emphasize "actually speaking." Jumpspeak has massive reach advantage (1,655 ads) but lacks Speak's AI feedback depth. Speak's response: lean harder into the AI personalization angle that Jumpspeak can't match.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Longest-Running Active Creatives (Conviction Signals)</div>
+    <div class="ad-list">
+
+      <div class="speak-ad-item">
+        <img class="speak-thumb" src="https://motionswipefile.blob.core.windows.net/swipe-file-cached-links/swipe-file-source-link/883753330513994/673220ef7850d1eb2996be51/6dcc734b-5932-4361-9019-a8fe0ecd5792.jpeg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+        <div class="speak-body">
+          <div class="speak-name">#1 · Video · "They're lying to you language learners" · 314d active 🏆</div>
+          <div class="speak-text">Anti-traditional-app manifesto: ❌ No speaking practice ❌ No pronunciation feedback → ✅ Speak day 1 ✅ AI feedback ✅ 100-day guarantee. UK landing.</div>
+          <div class="speak-metrics">
+            <span class="speak-metric">Launched <strong>Nov 10, 2024</strong></span>
+            <span class="speak-metric">Status <strong style="color:var(--safe);">Active 314d</strong></span>
+            <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=883753330513994" target="_blank">↗ View Ad</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="speak-ad-item">
+        <img class="speak-thumb" src="" alt="" onerror="this.style.background='linear-gradient(135deg,#f5f5f7,#e8e8ed)';this.src=''">
+        <div class="speak-body">
+          <div class="speak-name">#2 · Static Image · "Get 75% Off | Limited Time Only" · 303d active</div>
+          <div class="speak-text">"Speak Spanish, French, Italian, and more with confidence in 3 weeks. Join 300K+ happy customers today, try it risk-free for 100 days."</div>
+          <div class="speak-metrics">
+            <span class="speak-metric">Launched <strong>Nov 23, 2024</strong></span>
+            <span class="speak-metric">Status <strong style="color:var(--safe);">Active 303d</strong></span>
+            <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=595963782962033" target="_blank">↗ View Ad</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="speak-ad-item">
+        <img class="speak-thumb" src="https://motionswipefile.blob.core.windows.net/swipe-file-cached-links/swipe-file-source-link/959350482786944/67a997750a70ccc0c5fdbc6d/3888d862-512e-4089-b3f3-dbc7c87ceda8.jpeg" alt="" onerror="this.style.background='#e8e8ed';this.src=''">
+        <div class="speak-body">
+          <div class="speak-name">#3 · Video · "Why haven't language learners been told this?" · 253d active</div>
+          <div class="speak-text">Same anti-app manifesto, reframed as a question hook. "Why haven't you been told?" creates curiosity + urgency. 17 languages, UK/global flow.</div>
+          <div class="speak-metrics">
+            <span class="speak-metric">Launched <strong>Jan 7, 2025</strong></span>
+            <span class="speak-metric">Status <strong style="color:var(--safe);">Active 253d</strong></span>
+            <a class="ad-link-btn" href="https://www.facebook.com/ads/library/?id=959350482786944" target="_blank">↗ View Ad</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ════════════════ SYNTHESIS ════════════════ -->
+<div id="page-synthesis" class="page">
+
+  <div style="font-size:28px; font-weight:800; letter-spacing:-0.03em; margin-bottom:32px;">
+    ⚡ Cross-Competitor Synthesis
+  </div>
+
+  <div class="section-card" style="margin-bottom:12px;">
+    <div class="insight-num">Insight 01</div>
+    <div class="insight-title">The entire category is converging on "habit formation"</div>
+    <div class="insight-body">Duolingo pushes "a few minutes a day," SayVoca pushes "more addictive than Reels," Ringle pushes "daily-updated materials." All three brands are centering their value on sustained behavior over time — not just learning, but continuing. The category has shifted from "teach" to "retain." Users are now asking "will I actually stick with this?" before anything else.</div>
+  </div>
+
+  <div class="section-card" style="margin-bottom:12px;">
+    <div class="insight-num">Insight 02</div>
+    <div class="insight-title">Career angle is a shared direction — but each brand takes a different road</div>
+    <div class="insight-body">Ringle directly sells career upgrade. SayVoca approaches it indirectly through real-life utility (travel, workplace). Duolingo doesn't touch career at all. Competition for the adult professional persona is intensifying, but the battleground is still fragmented — no single brand owns this angle definitively.</div>
+  </div>
+
+  <div class="section-card" style="margin-bottom:12px;">
+    <div class="insight-num">Insight 03</div>
+    <div class="insight-title">UGC is the default — but strategy varies sharply</div>
+    <div class="insight-body">SayVoca uses UGC to amplify volume at scale. Ringle uses UGC to prove success stories. Duolingo skips UGC in favor of screen recordings. Using UGC itself is no longer a differentiator — what narrative you choose to amplify through UGC is the actual competitive variable.</div>
+  </div>
+
+  <div class="section-card" style="margin-bottom:12px;">
+    <div class="insight-num">Insight 04</div>
+    <div class="insight-title">Ringle's B2B expansion is a structural move, not diversification</div>
+    <div class="insight-body">Mass investment in HR lead magnets isn't channel diversification — it's a direct pivot to corporate education/welfare budgets. If Ringle builds strong brand recognition at the enterprise level, it creates an individual-to-enterprise adoption pipeline. Long-term, this could create a meaningful barrier if Speak ever pursues enterprise.</div>
+  </div>
+
+  <div class="whitespace-card">
+    <div class="whitespace-title">🌳 Speak's Whitespace — Where No One Is Playing</div>
+    <ul class="whitespace-list">
+      <li><strong>AI-as-core-differentiator:</strong> None of the three brands use AI as the primary positioning pillar. "AI analyzes your pronunciation" as a front-line tech advantage ad has not been run by any competitor.</li>
+      <li><strong>"Proof that your English actually improved":</strong> Ringle claims results-first, but no one shows a before/after or tracks measurable improvement. Speak's AI feedback data could power a proof-based creative format no one else has.</li>
+      <li><strong>Speaking anxiety angle:</strong> Nobody is directly addressing the fear of speaking — the "blank mind when a foreigner talks to you" moment. This is a deeply felt, underserved emotional hook that fits Speak's product perfectly.</li>
+      <li><strong>Full autonomy:</strong> Ringle requires human tutors. SayVoca requires content consumption. No brand is advertising "practice with AI, any time, no schedule, no tutor needed" as a freedom proposition.</li>
+    </ul>
+  </div>
+
+</div>
+
+
+<script>
+  function switchTab(id, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    el.classList.add('active');
+  }
+
+  function switchCountry(id, el) {
+    document.querySelectorAll('.country-page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.country-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('country-' + id).classList.add('active');
+    el.classList.add('active');
+  }
+</script>
+</body>
+</html>
